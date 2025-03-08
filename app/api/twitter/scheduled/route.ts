@@ -35,7 +35,7 @@ async function generateTweetContent(context: string) {
   }
 }
 
-export async function POST(req: Request) {
+export async function POST() {
   try {
     // Get trending topics and recent discussions
     const trends = await getTrendingDiscussions();
@@ -66,5 +66,5 @@ export async function POST(req: Request) {
 
 // Optional: Add GET method to manually trigger the scheduled task
 export async function GET() {
-  return POST(new Request(''));
+  return POST();
 } 

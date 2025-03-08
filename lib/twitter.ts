@@ -51,12 +51,21 @@ export async function createTweet(text: string) {
   }
 }
 
-interface TrendingTopic {
+interface TwitterTrend {
   name: string;
   tweet_volume: number | null;
 }
 
-export async function getTrendingDiscussions(): Promise<TrendingTopic[]> {
+// interface TwitterTrendResponse {
+//   trends: TwitterTrend[];
+// }
+
+interface TwitterTweet {
+  id: string;
+  text: string;
+}
+
+export async function getTrendingDiscussions(): Promise<TwitterTrend[]> {
   try {
     const response = await fetch('https://api.twitter.com/1.1/trends/place.json?id=1', {
       headers: {
@@ -67,7 +76,7 @@ export async function getTrendingDiscussions(): Promise<TrendingTopic[]> {
     const data = await response.json();
     if (!Array.isArray(data) || !data[0]?.trends) return [];
 
-    return data[0].trends.map((trend: any) => ({
+    return data[0].trends.map((trend: TwitterTrend) => ({
       name: trend.name,
       tweet_volume: trend.tweet_volume || null
     }));
@@ -77,12 +86,7 @@ export async function getTrendingDiscussions(): Promise<TrendingTopic[]> {
   }
 }
 
-interface Tweet {
-  id: string;
-  text: string;
-}
-
-export async function searchRecentTweets(query: string): Promise<Tweet[]> {
+export async function searchRecentTweets(query: string): Promise<TwitterTweet[]> {
   try {
     const response = await fetch(
       `https://api.twitter.com/2/tweets/search/recent?query=${encodeURIComponent(query)}`,
@@ -96,7 +100,7 @@ export async function searchRecentTweets(query: string): Promise<Tweet[]> {
     const data = await response.json();
     if (!data?.data) return [];
 
-    return data.data.map((tweet: any) => ({
+    return data.data.map((tweet: TwitterTweet) => ({
       id: tweet.id,
       text: tweet.text || ''
     }));

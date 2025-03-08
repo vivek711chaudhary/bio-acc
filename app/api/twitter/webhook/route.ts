@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { twitterClient, sendDirectMessage, replyToTweet, generateCrcResponse } from '@/lib/twitter';
+import { sendDirectMessage, replyToTweet, generateCrcResponse } from '@/lib/twitter';
 import { agentConfig } from '@/app/config/agent-config';
 
 // Helper function to process message with AI
