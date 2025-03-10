@@ -1,9 +1,8 @@
 'use client';
 
 import React from 'react';
-import Chat from '../components/Chat';
 import { Button } from "@/components/ui/button";
-import { GithubIcon, TwitterIcon, Send, Globe, BookOpen, ChevronRight, ArrowRight, Beaker, Brain, Network, Users } from "lucide-react";
+import { GithubIcon, TwitterIcon, Send, Globe, BookOpen, ArrowRight, Brain, Network, Users } from "lucide-react";
 import { ModeToggle } from "@/components/mode-toggle";
 import {
   Tooltip,

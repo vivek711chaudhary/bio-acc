@@ -44,7 +44,6 @@ export default function Chat() {
   })));
   const [input, setInput] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
-  const [isSearching, setIsSearching] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -54,8 +53,8 @@ export default function Chat() {
     const savedChat = localStorage.getItem('bioAccChat');
     if (savedChat) {
       try {
-        const parsedChat = JSON.parse(savedChat);
-        setMessages(parsedChat.map((msg: any) => ({
+        const parsedChat: Message[] = JSON.parse(savedChat);
+        setMessages(parsedChat.map((msg: Message) => ({
           ...msg,
           timestamp: msg.timestamp || Date.now(),
           reactions: msg.reactions || []
