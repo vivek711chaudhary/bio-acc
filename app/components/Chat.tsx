@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Loader2, Trash2, Copy, Check, SmilePlus, Search, Twitter, Globe, AlertTriangle } from "lucide-react";
+import { Loader2, Trash2, Copy, Check, SmilePlus, Search, Twitter, Globe, AlertTriangle, MessageSquare, Github } from "lucide-react";
 import { format } from 'date-fns';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { atomDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
@@ -26,6 +26,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { ModeToggle } from "@/components/mode-toggle";
 
 interface Message {
   role: 'user' | 'assistant';
@@ -37,17 +38,19 @@ interface Message {
 const EMOJI_REACTIONS = ['👍', '❤️', '🚀', '💡', '🧬', '🔬', '🧪', '🤖', '🎯'];
 
 export default function Chat() {
-  const [messages, setMessages] = useState<Message[]>(defaultMessages.map(msg => ({ 
-    ...msg, 
-    timestamp: Date.now(),
-    reactions: [] 
-  })));
+  const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [isClient, setIsClient] = useState(false);
   
+  // Set isClient to true once component mounts
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   // Load saved chat from localStorage on component mount
   useEffect(() => {
     const savedChat = localStorage.getItem('bioAccChat');
@@ -68,6 +71,13 @@ export default function Chat() {
           reactions: [] 
         })));
       }
+    } else {
+      // Initialize with default messages
+      setMessages(defaultMessages.map(msg => ({ 
+        ...msg, 
+        timestamp: Date.now(),
+        reactions: [] 
+      })));
     }
   }, []);
 
@@ -211,6 +221,12 @@ export default function Chat() {
     message.content.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  // Only render timestamps on client side
+  const formatTimestamp = (timestamp: number) => {
+    if (!isClient) return '';
+    return format(timestamp, 'HH:mm');
+  };
+
   return (
     <div className="h-full flex flex-col max-h-full">
       <Card className="flex-1 backdrop-blur-sm bg-background/95 border shadow-lg flex flex-col overflow-hidden">
@@ -222,7 +238,31 @@ export default function Chat() {
                 <div className="h-2 w-2 md:h-3 md:w-3 rounded-full bg-green-500 animate-pulse" />
                 <h2 className="text-lg md:text-xl font-bold">Chat Assistant</h2>
               </div>
+              {/* Icons - Responsive Layout */}
               <div className="flex items-center gap-1 md:gap-2">
+                {/* Mobile Icons (visible only on smaller than lg screens) */}
+                <div className="flex lg:hidden items-center gap-1">
+                  <ModeToggle />
+                  <a
+                    href="https://t.me/bioaccbot"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-1 hover:scale-110 transition-all rounded-full bg-blue-500 text-white hover:bg-blue-600"
+                  >
+                    <MessageSquare className="h-4 w-4" />
+                    <span className="sr-only">Telegram</span>
+                  </a>
+                  <a
+                    href="https://github.com/bioacc"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-1 hover:scale-110 transition-all rounded-full bg-zinc-800 text-white hover:bg-zinc-700"
+                  >
+                    <Github className="h-4 w-4" />
+                    <span className="sr-only">GitHub</span>
+                  </a>
+                </div>
+                {/* Common Icons (visible on all screens) */}
                 <a
                   href="https://x.com/BIOACC_SOL_CTO"
                   target="_blank"
@@ -309,7 +349,7 @@ export default function Chat() {
                         {renderContent(message.content, index)}
                         <div className="mt-2 flex items-center justify-between text-xs">
                           <time className={`${message.role === 'user' ? 'text-primary-foreground/70' : 'text-secondary-foreground/70'}`}>
-                            {format(message.timestamp, 'HH:mm')}
+                            {formatTimestamp(message.timestamp)}
                           </time>
                         </div>
                         {message.reactions && message.reactions.length > 0 && (
