@@ -24,8 +24,8 @@ When responding:
 5. Generate shareable content when appropriate`,
 
   temperature: 0.7,
-  max_tokens: 800,
-  model: 'mistralai/Mixtral-8x7B-Instruct-v0.1',
+  max_tokens: 2000,
+  model: 'gpt-3.5-turbo',
 };
 
 export const defaultMessages: Message[] = [

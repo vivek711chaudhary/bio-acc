@@ -241,8 +241,29 @@ export default function Chat() {
               {/* Icons - Responsive Layout */}
               <div className="flex items-center gap-1 md:gap-2">
                 {/* Mobile Icons (visible only on smaller than lg screens) */}
-                <div className="flex lg:hidden items-center gap-1">
+                <div className="flex items-center gap-1">
                   <ModeToggle />
+                  {/* <a
+                    href="https://t.me/bioaccbot"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-1 hover:scale-110 transition-all rounded-full bg-blue-500 text-white hover:bg-blue-600"
+                  >
+                    <MessageSquare className="h-4 w-4" />
+                    <span className="sr-only">Telegram</span>
+                  </a>
+                  <a
+                    href="https://github.com/bioacc"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-1 hover:scale-110 transition-all rounded-full bg-zinc-800 text-white hover:bg-zinc-700"
+                  >
+                    <Github className="h-4 w-4" />
+                    <span className="sr-only">GitHub</span>
+                  </a> */}
+                </div>
+                <div className="flex lg:hidden items-center gap-1">
+                  {/* <ModeToggle /> */}
                   <a
                     href="https://t.me/bioaccbot"
                     target="_blank"

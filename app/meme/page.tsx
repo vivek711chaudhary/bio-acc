@@ -1,22 +1,36 @@
 'use client';
 
-import Chat from '../components/Chat';
+import MemeChat, { WELCOME_MESSAGE } from '../components/MemeChat';
 import { Button } from "@/components/ui/button";
 import { GithubIcon, TwitterIcon, Send, Globe, BookOpen } from "lucide-react";
-// import { ModeToggle } from "@/components/mode-toggle";
 import {
   Tooltip,
-  TooltipContent,
   TooltipProvider,
   TooltipTrigger,
+  TooltipContent,
 } from "@/components/ui/tooltip";
+import { ModeToggle } from "@/components/mode-toggle";
 
-export default function Home() {
+export interface MessageContent {
+  type: 'text' | 'image_url';
+  text?: string;
+  image_url?: {
+    url: string;
+  };
+}
+
+export interface Message {
+  role: 'user' | 'assistant';
+  content: string | MessageContent[];
+  timestamp: number;
+}
+
+export default function MemePage() {
   return (
     <TooltipProvider>
       <main className="h-screen flex overflow-hidden bg-gradient-to-b from-background to-secondary/20 dark:from-background dark:to-secondary/5">
-        {/* Left Sidebar - Hidden on mobile, visible on lg screens */}
-        <aside className="hidden lg:flex w-16 border-r bg-background/80 backdrop-blur-sm flex-col items-center py-6 gap-6 transition-all duration-300">
+        {/* Left Sidebar */}
+        <aside className="hidden lg:flex w-16 border-r bg-background/80 backdrop-blur-sm flex-col items-center py-6 gap-6">
           {/* Top Section - Social Links */}
           <div className="flex flex-col items-center gap-4 m-20">
             <Tooltip>
@@ -88,7 +102,6 @@ export default function Home() {
             </Tooltip>
           </div>
 
-          {/* Bottom Section - Empty space for balance */}
           <div className="h-8"></div>
         </aside>
 
@@ -96,21 +109,30 @@ export default function Home() {
         <div className="flex-1 flex flex-col overflow-hidden">
           {/* Header */}
           <header className="relative z-10 py-2 sm:py-4 bg-background/80 backdrop-blur-sm border-b">
-            <div className="max-w-4xl mx-auto px-3 sm:px-4 text-center">
+            <div className="max-w-4xl mx-auto px-3 sm:px-4 flex items-center justify-between">
               <div className="relative inline-block animate-float">
                 <div className="absolute -inset-1 bg-gradient-to-r from-primary to-secondary opacity-75 blur animate-pulse"></div>
                 <h1 className="relative text-xl sm:text-2xl md:text-3xl font-bold text-foreground bg-background px-2 sm:px-3 py-1 animate-reveal">
-                  BIO/ACC Chat Assistant
+                  BIO/ACC Meme Generator
                 </h1>
               </div>
+              <ModeToggle />
             </div>
           </header>
 
-          {/* Chat Section - Properly contained */}
+          {/* Meme Chat Section */}
           <div className="flex-1 relative bg-background/40 overflow-hidden">
             <div className="absolute inset-0 px-2 sm:px-4 py-2 sm:py-4 overflow-hidden">
               <div className="h-full max-w-5xl mx-auto overflow-y-auto">
-                <Chat />
+                <MemeChat 
+                  conversationId=""
+                  messages={[{
+                    role: 'assistant',
+                    content: WELCOME_MESSAGE.content,
+                    timestamp: Date.now(),
+                    reactions: []
+                  }]}
+                />
               </div>
             </div>
           </div>
