@@ -1,3 +1,5 @@
+https://bio-acc-meme.netlify.app/ is another AI chat application. It uses OpenAI's free API key, which has a limited number of tokens per day. If the daily token limit is exceeded, the application may not function properly. However, if a paid API key is used, it will work without such limitations.
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
